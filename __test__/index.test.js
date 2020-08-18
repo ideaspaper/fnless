@@ -1,7 +1,4 @@
 const fs = require('fs');
-const esp = require('esprima');
-const esc = require('escodegen');
-const { execSync } = require('child_process');
 const fnless = require('./../index');
 
 const testSolutionFile = 'solution.js';
@@ -387,21 +384,19 @@ describe('Checking messy code', () => {
 
 describe('Running', () => {
   it('Simple console.log()', async () => {
-    let keyVars = ['a'];
-
     let code = '';
     code += `let a = 'Hello World'\n`;
     code += `console.log(a)`;
     fs.writeFileSync(testSolutionFile, code);
 
-    const mfnless = new fnless(testSolutionFile, keyVars);
+    const mfnless = new fnless(testSolutionFile, ['a']);
     expect(mfnless.isKeyVarsExist()).toEqual(true);
-    expect(mfnless.testProcess({ a: '\'Hey Dunia!\'' })).toMatch('Hey Dunia!');
+    expect(mfnless.testProcess({ a: "'Hey Dunia!'" })).toMatch('Hey Dunia!');
   });
 });
 
-describe('Delete instrument file', () => {
-  it('Simple console.log()', async () => {
+describe('Instrument file', () => {
+  it('Delete', async () => {
     let keyVars = ['a'];
 
     let code = '';
