@@ -4,9 +4,9 @@ const esc = require('escodegen');
 const { execSync } = require('child_process');
 
 class fnless {
-  constructor(solutionPath, instrumentFile, keyVars) {
+  constructor(solutionPath, keyVars) {
     this._solutionPath = solutionPath;
-    this._instrumentFile = instrumentFile;
+    this._instrumentFile = './fnless-inst.js';
     this._keyVars = keyVars;
   }
 
