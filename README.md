@@ -88,6 +88,9 @@ none
 This is an example when using fnless with **jest**.
 
 ```javascript
+const fs = require('fs');
+const fnless = require('fnless');
+
 it('Simple console.log()', async () => {
   let code = '';
   code += `let a = 'Hello World'\n`;
