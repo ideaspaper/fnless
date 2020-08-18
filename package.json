@@ -1,0 +1,19 @@
+{
+  "name": "fnless",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "26.4.0"
+  },
+  "dependencies": {
+    "escodegen": "2.0.0",
+    "esprima": "4.0.1"
+  }
+}
