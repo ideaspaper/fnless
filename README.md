@@ -73,7 +73,7 @@ Same string you get when running the source code on terminal.
 
 ### deleteInstrumentFile
 
-This method should be called after all the testing completed. This method will delete the testing file that was used for testing process.
+This method should be called after all testing has been completed. This method will delete the testing file that was created for testing process.
 
 _**Parameters**_
 
