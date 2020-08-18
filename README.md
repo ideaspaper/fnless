@@ -10,7 +10,7 @@ This package can be installed using npm command `npm i fnless`.
 
 ## Usage
 
-### Constructor
+### `Constructor`
 
 Below is the code needed for initialization process.
 
@@ -28,7 +28,7 @@ _**Return**_
 
 fnless object instance.
 
-### isKeyVarsExist
+### `isKeyVarsExist`
 
 This method will check whether all of `keyVars` exist in the source code file.
 
@@ -51,7 +51,7 @@ _**Return**_
 - `true`: if key variables exist.
 - `false`: if key variables do not exist.
 
-### testProcess
+### `testProcess`
 
 This method is the wrapper of the functionless code.
 
@@ -71,7 +71,7 @@ _**Return**_
 
 Same string you get when running the source code on terminal.
 
-### deleteInstrumentFile
+### `deleteInstrumentFile`
 
 This method should be called after all testing has been completed. This method will delete the testing file that was created for testing process.
 
