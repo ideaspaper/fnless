@@ -267,6 +267,84 @@ describe('Checking more than one variables', () => {
   });
 });
 
+describe('Checking array', () => {
+  it('Mixed data types', async () => {
+    let keyVars = ['a'];
+    let code = '';
+    code += `let a = 'Hello world!';`;
+    fs.writeFileSync(testSolutionFile, code);
+    let expectedCode = '';
+    expectedCode += `let a = JSON.parse('[1,"A",true]');`;
+    const mfnless = new fnless(testSolutionFile, keyVars);
+    expect(mfnless.isKeyVarsExist()).toEqual(true);
+    mfnless.testProcess({ a: [1, 'A', true] });
+    expect(fs.readFileSync(mfnless._instrumentFile, 'utf8')).toMatch(expectedCode);
+  });
+  it('Falsies (false, 0, \'\', null)', async () => {
+    let keyVars = ['a'];
+    let code = '';
+    code += `let a = 'Hello world!';`;
+    fs.writeFileSync(testSolutionFile, code);
+    let expectedCode = '';
+    expectedCode += `let a = JSON.parse('[false,0,"",null]');`;
+    const mfnless = new fnless(testSolutionFile, keyVars);
+    expect(mfnless.isKeyVarsExist()).toEqual(true);
+    mfnless.testProcess({ a: [false, 0, '', null] });
+    expect(fs.readFileSync(mfnless._instrumentFile, 'utf8')).toMatch(expectedCode);
+  });
+  it('Multidimensional array', async () => {
+    let keyVars = ['a'];
+    let code = '';
+    code += `let a = 'Hello world!';`;
+    fs.writeFileSync(testSolutionFile, code);
+    let expectedCode = '';
+    expectedCode += `let a = JSON.parse('[[1,2,3],["A","B","C"],[true,false]]');`;
+    const mfnless = new fnless(testSolutionFile, keyVars);
+    expect(mfnless.isKeyVarsExist()).toEqual(true);
+    mfnless.testProcess({ a: [[1, 2, 3], ['A', 'B', 'C'], [true, false]] });
+    expect(fs.readFileSync(mfnless._instrumentFile, 'utf8')).toMatch(expectedCode);
+  });
+});
+
+describe('Checking object', () => {
+  it('Mixed data types', async () => {
+    let keyVars = ['a'];
+    let code = '';
+    code += `let a = 'Hello world!';`;
+    fs.writeFileSync(testSolutionFile, code);
+    let expectedCode = '';
+    expectedCode += `let a = JSON.parse('{"key1":1,"key2":"A","key3":true,"key4":false}');`;
+    const mfnless = new fnless(testSolutionFile, keyVars);
+    expect(mfnless.isKeyVarsExist()).toEqual(true);
+    mfnless.testProcess({ a: { key1: 1, key2: 'A', key3: true, key4: false } });
+    expect(fs.readFileSync(mfnless._instrumentFile, 'utf8')).toMatch(expectedCode);
+  });
+  it('Falsies (false, 0, \'\', null)', async () => {
+    let keyVars = ['a'];
+    let code = '';
+    code += `let a = 'Hello world!';`;
+    fs.writeFileSync(testSolutionFile, code);
+    let expectedCode = '';
+    expectedCode += `let a = JSON.parse('{"key1":false,"key2":0,"key3":"","key4":null}');`;
+    const mfnless = new fnless(testSolutionFile, keyVars);
+    expect(mfnless.isKeyVarsExist()).toEqual(true);
+    mfnless.testProcess({ a: { key1: false, key2: 0, key3: '', key4: null } });
+    expect(fs.readFileSync(mfnless._instrumentFile, 'utf8')).toMatch(expectedCode);
+  });
+  it('Nested object', async () => {
+    let keyVars = ['a'];
+    let code = '';
+    code += `let a = 'Hello world!';`;
+    fs.writeFileSync(testSolutionFile, code);
+    let expectedCode = '';
+    expectedCode += `let a = JSON.parse('{"key1":{"key11":1,"key12":2},"key2":{"key21":"A","key22":"B"}}');`;
+    const mfnless = new fnless(testSolutionFile, keyVars);
+    expect(mfnless.isKeyVarsExist()).toEqual(true);
+    mfnless.testProcess({ a: { key1: { key11: 1, key12: 2 }, key2: { key21: 'A', key22: 'B' } } });
+    expect(fs.readFileSync(mfnless._instrumentFile, 'utf8')).toMatch(expectedCode);
+  });
+});
+
 describe('Checking messy code', () => {
   it('One line comment', async () => {
     let keyVars = ['a', 'b'];
@@ -432,7 +510,7 @@ describe('Running', () => {
     expect(mfnless.isKeyVarsExist()).toEqual(true);
     expect(mfnless.testProcess({ theWord: 'Hey World!', times1: 5, times2: 3 })).toMatch('Hey World!\nHey World!\nHey World!\nHey World!\nHey World!\nHey World!\nHey World!');
   });
-  it('conditionals with numbers', async () => {
+  it('Conditionals with numbers', async () => {
     let code = '';
     code += `let var1;\n`;
     code += `let var2;\n`;
@@ -451,7 +529,7 @@ describe('Running', () => {
     expect(mfnless.testProcess({ var1: 3, var2: 5 })).toMatch('false');
     expect(mfnless.testProcess({ var1: 3, var2: 3 })).toMatch('-1');
   });
-  it('conditionals with strings', async () => {
+  it('Conditionals with strings', async () => {
     let code = '';
     code += `let var1;\n`;
     code += `let var2;\n`;
@@ -466,6 +544,30 @@ describe('Running', () => {
     expect(mfnless.isKeyVarsExist()).toEqual(true);
     expect(mfnless.testProcess({ var1: 'Hello', var2: 'Hello' })).toMatch('same');
     expect(mfnless.testProcess({ var1: 'Hello', var2: 'Halo' })).toMatch('not same');
+  });
+  it('Looping and array', async () => {
+    let code = '';
+    code += `let var1;\n`;
+    code += `for (let i = 0; i < var1.length; i++) {\n`
+    code += `    console.log(var1[i]);\n`;
+    code += `}`;
+    fs.writeFileSync(testSolutionFile, code);
+
+    const mfnless = new fnless(testSolutionFile, ['var1']);
+    expect(mfnless.isKeyVarsExist()).toEqual(true);
+    expect(mfnless.testProcess({ var1: [10, 11, 'A', 'B', true, false] })).toMatch('10\n11\nA\nB\ntrue\nfalse');
+  });
+  it('Looping and object', async () => {
+    let code = '';
+    code += `let var1;\n`;
+    code += `for (const key in var1) {\n`
+    code += `    console.log(var1[key]);\n`;
+    code += `}`;
+    fs.writeFileSync(testSolutionFile, code);
+
+    const mfnless = new fnless(testSolutionFile, ['var1']);
+    expect(mfnless.isKeyVarsExist()).toEqual(true);
+    expect(mfnless.testProcess({ var1: { key1: 10, key2: 11, key3: 'A', key4: 'B', key5: true, key6: false } })).toMatch('10\n11\nA\nB\ntrue\nfalse');
   });
 });
 

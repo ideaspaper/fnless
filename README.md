@@ -65,7 +65,14 @@ _**Parameters**_
 
 - `objParams`: an object literal whose keys are the same with `keyVars`'s contents.
 
-Array and object are not yet supported.
+> Since fnless use `JSON.parse()`, there will be limitations when inserting array or object as value.
+>
+>- Data types that have been tested are `string`, `number` and `boolean`.
+>- Falsy values that are safe to be put inside array or object are `false`, `0`, `''` and `null`.
+>- Falsy value `-0` will be converted to `0`.
+>- When `undefined` is used in array, it will be converted to `null`. When `undefined` is used in object, the key will be **skipped**.
+>- Falsy value `NaN` will be converted to `null`.
+>- Both `Infinity` and `-Infinity` cannot be used because they will be converted to `null`.
 
 _**Return**_
 
