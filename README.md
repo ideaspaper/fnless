@@ -22,7 +22,7 @@ const mfnless = new fnless('./index.js', ['a', 'b']);
 _**Parameters**_
 
 - `solutionPath`: path of the source code file.
-- `keyVars`: an array of strings, which contain variable names whose value need to be changed during the test.
+- `keyVars`: an array of strings, which contains variable names whose value need to be changed during the test.
 
 _**Return**_
 
