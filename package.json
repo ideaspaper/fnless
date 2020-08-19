@@ -1,6 +1,6 @@
 {
   "name": "fnless",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Package to make testing functionless code easier.",
   "repository": {
     "type": "git",
@@ -10,7 +10,9 @@
   "scripts": {
     "test": "jest"
   },
-  "keywords": ["testing"],
+  "keywords": [
+    "testing"
+  ],
   "author": "",
   "license": "ISC",
   "devDependencies": {
