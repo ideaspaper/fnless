@@ -404,6 +404,69 @@ describe('Running', () => {
     expect(mfnless.isKeyVarsExist()).toEqual(true);
     expect(mfnless.testProcess({ a: 'Hey World!' })).toMatch('Hey World!');
   });
+  it('console.log() few times', async () => {
+    let code = '';
+    code += `let theWord;\n`;
+    code += `let times;\n`;
+    code += `for (let i = 0; i < times; i++) {\n`;
+    code += `    console.log(theWord);\n`;
+    code += `}`;
+    fs.writeFileSync(testSolutionFile, code);
+
+    const mfnless = new fnless(testSolutionFile, ['theWord', 'times']);
+    expect(mfnless.isKeyVarsExist()).toEqual(true);
+    expect(mfnless.testProcess({ theWord: 'Hey World!', times: 5 })).toMatch('Hey World!\nHey World!\nHey World!\nHey World!\nHey World!');
+  });
+  it('console.log() few times (with calculation)', async () => {
+    let code = '';
+    code += `let theWord;\n`;
+    code += `let times1;\n`;
+    code += `let times2;\n`;
+    code += `let times3 = (times1 * times2) - (times1 + times2);\n`;
+    code += `for (let i = 0; i < times3; i++) {\n`;
+    code += `    console.log(theWord);\n`;
+    code += `}`;
+    fs.writeFileSync(testSolutionFile, code);
+
+    const mfnless = new fnless(testSolutionFile, ['theWord', 'times1', 'times2']);
+    expect(mfnless.isKeyVarsExist()).toEqual(true);
+    expect(mfnless.testProcess({ theWord: 'Hey World!', times1: 5, times2: 3 })).toMatch('Hey World!\nHey World!\nHey World!\nHey World!\nHey World!\nHey World!\nHey World!');
+  });
+  it('conditionals with numbers', async () => {
+    let code = '';
+    code += `let var1;\n`;
+    code += `let var2;\n`;
+    code += `if (var1 > var2) {\n`;
+    code += `    console.log(true);\n`;
+    code += `} else if (var1 < var2) {\n`;
+    code += `    console.log(false);\n`;
+    code += `} else {\n`;
+    code += `    console.log(-1);\n`;
+    code += `}`;
+    fs.writeFileSync(testSolutionFile, code);
+
+    const mfnless = new fnless(testSolutionFile, ['var1', 'var2']);
+    expect(mfnless.isKeyVarsExist()).toEqual(true);
+    expect(mfnless.testProcess({ var1: 5, var2: 3 })).toMatch('true');
+    expect(mfnless.testProcess({ var1: 3, var2: 5 })).toMatch('false');
+    expect(mfnless.testProcess({ var1: 3, var2: 3 })).toMatch('-1');
+  });
+  it('conditionals with strings', async () => {
+    let code = '';
+    code += `let var1;\n`;
+    code += `let var2;\n`;
+    code += `if (var1 === var2) {\n`;
+    code += `    console.log('same');\n`;
+    code += `} else {\n`;
+    code += `    console.log('not same');\n`;
+    code += `}`;
+    fs.writeFileSync(testSolutionFile, code);
+
+    const mfnless = new fnless(testSolutionFile, ['var1', 'var2']);
+    expect(mfnless.isKeyVarsExist()).toEqual(true);
+    expect(mfnless.testProcess({ var1: 'Hello', var2: 'Hello' })).toMatch('same');
+    expect(mfnless.testProcess({ var1: 'Hello', var2: 'Halo' })).toMatch('not same');
+  });
 });
 
 describe('Instrument file', () => {
