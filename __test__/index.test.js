@@ -16,7 +16,7 @@ describe('Checking code with one variable (falsy)', () => {
     code += `let a = 'Hello world!';`;
     fs.writeFileSync(testSolutionFile, code);
     let expectedCode = '';
-    expectedCode += `let a = false;`;
+    expectedCode += `let a = JSON.parse('false');`;
     const mfnless = new fnless(testSolutionFile, keyVars);
     expect(mfnless.isKeyVarsExist()).toEqual(true);
     mfnless.testProcess({ a: false });
@@ -28,10 +28,22 @@ describe('Checking code with one variable (falsy)', () => {
     code += `let a = 'Hello world!';`;
     fs.writeFileSync(testSolutionFile, code);
     let expectedCode = '';
-    expectedCode += `let a = 0;`;
+    expectedCode += `let a = JSON.parse('0');`;
     const mfnless = new fnless(testSolutionFile, keyVars);
     expect(mfnless.isKeyVarsExist()).toEqual(true);
     mfnless.testProcess({ a: 0 });
+    expect(fs.readFileSync(mfnless._instrumentFile, 'utf8')).toMatch(expectedCode);
+  });
+  it('-0', async () => {
+    let keyVars = ['a'];
+    let code = '';
+    code += `let a = 'Hello world!';`;
+    fs.writeFileSync(testSolutionFile, code);
+    let expectedCode = '';
+    expectedCode += `let a = JSON.parse('0');`;
+    const mfnless = new fnless(testSolutionFile, keyVars);
+    expect(mfnless.isKeyVarsExist()).toEqual(true);
+    mfnless.testProcess({ a: -0 });
     expect(fs.readFileSync(mfnless._instrumentFile, 'utf8')).toMatch(expectedCode);
   });
   it('\'\'', async () => {
@@ -40,7 +52,7 @@ describe('Checking code with one variable (falsy)', () => {
     code += `let a = 'Hello world!';`;
     fs.writeFileSync(testSolutionFile, code);
     let expectedCode = '';
-    expectedCode += `let a = '';`;
+    expectedCode += `let a = JSON.parse('\"\"');`;
     const mfnless = new fnless(testSolutionFile, keyVars);
     expect(mfnless.isKeyVarsExist()).toEqual(true);
     mfnless.testProcess({ a: '' });
@@ -52,7 +64,7 @@ describe('Checking code with one variable (falsy)', () => {
     code += `let a = 'Hello world!';`;
     fs.writeFileSync(testSolutionFile, code);
     let expectedCode = '';
-    expectedCode += `let a = null;`;
+    expectedCode += `let a = JSON.parse('null');`;
     const mfnless = new fnless(testSolutionFile, keyVars);
     expect(mfnless.isKeyVarsExist()).toEqual(true);
     mfnless.testProcess({ a: null });
@@ -91,7 +103,7 @@ describe('Checking code with one variable (truthy)', () => {
     code += `let a = 'Hello world!';`;
     fs.writeFileSync(testSolutionFile, code);
     let expectedCode = '';
-    expectedCode += `let a = true;`;
+    expectedCode += `let a = JSON.parse('true');`;
     const mfnless = new fnless(testSolutionFile, keyVars);
     expect(mfnless.isKeyVarsExist()).toEqual(true);
     mfnless.testProcess({ a: true });
@@ -103,7 +115,7 @@ describe('Checking code with one variable (truthy)', () => {
     code += `let a = 'Hello world!';`;
     fs.writeFileSync(testSolutionFile, code);
     let expectedCode = '';
-    expectedCode += `let a = 42;`;
+    expectedCode += `let a = JSON.parse('42');`;
     const mfnless = new fnless(testSolutionFile, keyVars);
     expect(mfnless.isKeyVarsExist()).toEqual(true);
     mfnless.testProcess({ a: 42 });
@@ -115,7 +127,7 @@ describe('Checking code with one variable (truthy)', () => {
     code += `let a = 'Hello world!';`;
     fs.writeFileSync(testSolutionFile, code);
     let expectedCode = '';
-    expectedCode += `let a = '0';`;
+    expectedCode += `let a = JSON.parse('\"0\"');`;
     const mfnless = new fnless(testSolutionFile, keyVars);
     expect(mfnless.isKeyVarsExist()).toEqual(true);
     mfnless.testProcess({ a: '0' });
@@ -127,10 +139,10 @@ describe('Checking code with one variable (truthy)', () => {
     code += `let a = 'Hello world!';`;
     fs.writeFileSync(testSolutionFile, code);
     let expectedCode = '';
-    expectedCode += `let a = 'false';`;
+    expectedCode += `let a = JSON.parse('\"false\"');`;
     const mfnless = new fnless(testSolutionFile, keyVars);
     expect(mfnless.isKeyVarsExist()).toEqual(true);
-    mfnless.testProcess({ a: '\'false\'' });
+    mfnless.testProcess({ a: 'false' });
     expect(fs.readFileSync(mfnless._instrumentFile, 'utf8')).toMatch(expectedCode);
   });
   it('-42', async () => {
@@ -139,7 +151,7 @@ describe('Checking code with one variable (truthy)', () => {
     code += `let a = 'Hello world!';`;
     fs.writeFileSync(testSolutionFile, code);
     let expectedCode = '';
-    expectedCode += `let a = -42;`;
+    expectedCode += `let a = JSON.parse('-42');`;
     const mfnless = new fnless(testSolutionFile, keyVars);
     expect(mfnless.isKeyVarsExist()).toEqual(true);
     mfnless.testProcess({ a: -42 });
@@ -151,7 +163,7 @@ describe('Checking code with one variable (truthy)', () => {
     code += `let a = 'Hello world!';`;
     fs.writeFileSync(testSolutionFile, code);
     let expectedCode = '';
-    expectedCode += `let a = 3.14;`;
+    expectedCode += `let a = JSON.parse('3.14');`;
     const mfnless = new fnless(testSolutionFile, keyVars);
     expect(mfnless.isKeyVarsExist()).toEqual(true);
     mfnless.testProcess({ a: 3.14 });
@@ -163,7 +175,7 @@ describe('Checking code with one variable (truthy)', () => {
     code += `let a = 'Hello world!';`;
     fs.writeFileSync(testSolutionFile, code);
     let expectedCode = '';
-    expectedCode += `let a = -3.14;`;
+    expectedCode += `let a = JSON.parse('-3.14');`;
     const mfnless = new fnless(testSolutionFile, keyVars);
     expect(mfnless.isKeyVarsExist()).toEqual(true);
     mfnless.testProcess({ a: -3.14 });
@@ -187,14 +199,13 @@ describe('Checking code with one variable (truthy)', () => {
     code += `let a = 'Hello world!';`;
     fs.writeFileSync(testSolutionFile, code);
     let expectedCode = '';
-    expectedCode += `let a = Infinity;`;
+    expectedCode += `let a = -Infinity;`;
     const mfnless = new fnless(testSolutionFile, keyVars);
     expect(mfnless.isKeyVarsExist()).toEqual(true);
-    mfnless.testProcess({ a: Infinity });
+    mfnless.testProcess({ a: -Infinity });
     expect(fs.readFileSync(mfnless._instrumentFile, 'utf8')).toMatch(expectedCode);
   });
 });
-
 
 describe('Checking more than one variables', () => {
   it('Two variables', async () => {
@@ -206,8 +217,8 @@ describe('Checking more than one variables', () => {
     fs.writeFileSync(testSolutionFile, code);
 
     let expectedCode = '';
-    expectedCode += `let a = false;\n`;
-    expectedCode += `let b = 0;`;
+    expectedCode += `let a = JSON.parse('false');\n`;
+    expectedCode += `let b = JSON.parse('0');`;
 
     const mfnless = new fnless(testSolutionFile, keyVars);
     expect(mfnless.isKeyVarsExist()).toEqual(true);
@@ -224,9 +235,9 @@ describe('Checking more than one variables', () => {
     fs.writeFileSync(testSolutionFile, code);
 
     let expectedCode = '';
-    expectedCode += `let a = false;\n`;
-    expectedCode += `let b = 0;\n`;
-    expectedCode += `let c = '';`;
+    expectedCode += `let a = JSON.parse('false');\n`;
+    expectedCode += `let b = JSON.parse('0');\n`;
+    expectedCode += `let c = JSON.parse('\"\"');`;
 
     const mfnless = new fnless(testSolutionFile, keyVars);
     expect(mfnless.isKeyVarsExist()).toEqual(true);
@@ -244,9 +255,9 @@ describe('Checking more than one variables', () => {
     fs.writeFileSync(testSolutionFile, code);
 
     let expectedCode = '';
-    expectedCode += `let a = false;\n`;
-    expectedCode += `let b = 0;\n`;
-    expectedCode += `let c = '';\n`;
+    expectedCode += `let a = JSON.parse('false');\n`;
+    expectedCode += `let b = JSON.parse('0');\n`;
+    expectedCode += `let c = JSON.parse('\"\"');\n`;
     expectedCode += `let d = Infinity;`;
 
     const mfnless = new fnless(testSolutionFile, keyVars);
@@ -267,8 +278,8 @@ describe('Checking messy code', () => {
     fs.writeFileSync(testSolutionFile, code);
 
     let expectedCode = '';
-    expectedCode += `let a = false;\n`;
-    expectedCode += `let b = 0;`;
+    expectedCode += `let a = JSON.parse('false');\n`;
+    expectedCode += `let b = JSON.parse('0');`;
 
     const mfnless = new fnless(testSolutionFile, keyVars);
     expect(mfnless.isKeyVarsExist()).toEqual(true);
@@ -285,8 +296,8 @@ describe('Checking messy code', () => {
     fs.writeFileSync(testSolutionFile, code);
 
     let expectedCode = '';
-    expectedCode += `let a = false;\n`;
-    expectedCode += `let b = 0;`;
+    expectedCode += `let a = JSON.parse('false');\n`;
+    expectedCode += `let b = JSON.parse('0');`;
 
     const mfnless = new fnless(testSolutionFile, keyVars);
     expect(mfnless.isKeyVarsExist()).toEqual(true);
@@ -304,8 +315,8 @@ describe('Checking messy code', () => {
     fs.writeFileSync(testSolutionFile, code);
 
     let expectedCode = '';
-    expectedCode += `let a = false;\n`;
-    expectedCode += `let b = 0;`;
+    expectedCode += `let a = JSON.parse('false');\n`;
+    expectedCode += `let b = JSON.parse('0');`;
 
     const mfnless = new fnless(testSolutionFile, keyVars);
     expect(mfnless.isKeyVarsExist()).toEqual(true);
@@ -323,8 +334,8 @@ describe('Checking messy code', () => {
     fs.writeFileSync(testSolutionFile, code);
 
     let expectedCode = '';
-    expectedCode += `let a = false;\n`;
-    expectedCode += `let b = 0;`;
+    expectedCode += `let a = JSON.parse('false');\n`;
+    expectedCode += `let b = JSON.parse('0');`;
 
     const mfnless = new fnless(testSolutionFile, keyVars);
     expect(mfnless.isKeyVarsExist()).toEqual(true);
@@ -341,8 +352,8 @@ describe('Checking messy code', () => {
     fs.writeFileSync(testSolutionFile, code);
 
     let expectedCode = '';
-    expectedCode += `let a = false;\n`;
-    expectedCode += `let b = 0;`;
+    expectedCode += `let a = JSON.parse('false');\n`;
+    expectedCode += `let b = JSON.parse('0');`;
 
     const mfnless = new fnless(testSolutionFile, keyVars);
     expect(mfnless.isKeyVarsExist()).toEqual(true);
@@ -369,8 +380,8 @@ describe('Checking messy code', () => {
     fs.writeFileSync(testSolutionFile, code);
 
     let expectedCode = '';
-    expectedCode += `let a = false;\n`;
-    expectedCode += `let b = 0;\n`;
+    expectedCode += `let a = JSON.parse('false');\n`;
+    expectedCode += `let b = JSON.parse('0');\n`;
     expectedCode += `for (let i = 0; i < 5; i++) {\n`;
     expectedCode += `    console.log('Hello world');\n`;
     expectedCode += `}`;
@@ -391,7 +402,7 @@ describe('Running', () => {
 
     const mfnless = new fnless(testSolutionFile, ['a']);
     expect(mfnless.isKeyVarsExist()).toEqual(true);
-    expect(mfnless.testProcess({ a: "'Hey Dunia!'" })).toMatch('Hey Dunia!');
+    expect(mfnless.testProcess({ a: 'Hey World!' })).toMatch('Hey World!');
   });
 });
 
@@ -405,7 +416,7 @@ describe('Instrument file', () => {
     fs.writeFileSync(testSolutionFile, code);
 
     const mfnless = new fnless(testSolutionFile, keyVars);
-    mfnless.testProcess({ a: '\'Hey Dunia!\'' });
+    mfnless.testProcess({ a: 'Hey World!' });
     mfnless.deleteInstrumentFile();
     expect(fs.existsSync(mfnless._instrumentFile)).toBe(false);
   });

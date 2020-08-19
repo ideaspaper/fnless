@@ -39,39 +39,41 @@ class fnless {
     const params = this._varsPassed(this._keyVars, parsed);
     for (const key in params) {
       delete params[key].declarations[0].init;
-      if (objParams) {
-        if (objParams[key] === undefined || isNaN(objParams[key]) || objParams[key] === Infinity || objParams[key] === -Infinity) {
-          params[key].declarations[0].init = {
-            type: 'Identifier',
-            name: objParams[key]
-          };
-        } else if (objParams[key] < 0) {
-          params[key].declarations[0].init = {
-            type: 'UnaryExpression',
-            operator: '-',
-            argument: {
-              type: 'Literal',
-              value: objParams[key]*-1,
-              raw: `${objParams[key]*-1}`
+      if (objParams[key] === undefined ||
+        (isNaN(objParams[key]) && typeof objParams[key] === 'number') ||
+        objParams[key] === Infinity ||
+        objParams[key] === -Infinity
+      ) {
+        params[key].declarations[0].init = {
+          type: 'Identifier',
+          name: objParams[key]
+        };
+      } else {
+        params[key].declarations[0].init = {
+          type: 'CallExpression',
+          callee: {
+            type: 'MemberExpression',
+            computed: false,
+            object: {
+              type: 'Identifier',
+              name: 'JSON'
             },
-            prefix: true
-          };
-        } else if (objParams[key] === '') {
-          params[key].declarations[0].init = {
-            type: 'Literal',
-            value: objParams[key],
-            raw: objParams[key]
-          };
-        } else {
-          params[key].declarations[0].init = {
-            type: 'Literal',
-            value: objParams[key],
-            raw: objParams[key]
-          };
-        }
+            property: {
+              type: 'Identifier',
+              name: 'parse'
+            }
+          },
+          arguments: [
+            {
+              type: 'Literal',
+              value: JSON.stringify(objParams[key]),
+              raw: `${JSON.stringify(objParams[key])}`,
+            }
+          ]
+        };
       }
     }
-    var newCode = esc.generate(parsed);
+    let newCode = esc.generate(parsed);
     fs.writeFileSync(this._instrumentFile, newCode);
     let result = String(execSync(`node ${this._instrumentFile}`));
     return result;

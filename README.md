@@ -58,14 +58,14 @@ This method is the wrapper of the functionless code.
 ```javascript
 const fnless = require('fnless');
 const mfnless = new fnless('./index.js', ['a', 'b']);
-const result = mfnless.testProcess({ a: "'Acong'", b: 10 })
+const result = mfnless.testProcess({ a: 'Acong', b: 10 })
 ```
 
 _**Parameters**_
 
 - `objParams`: an object literal whose keys are the same with `keyVars`'s contents.
 
-When inputting string value, you should write it as `"'stringValue'"`. Array and object are not yet supported.
+Array and object are not yet supported.
 
 _**Return**_
 
@@ -99,6 +99,6 @@ it('Simple console.log()', async () => {
 
   const mfnless = new fnless('index.js', ['a']);
   expect(mfnless.isKeyVarsExist()).toEqual(true);
-  expect(mfnless.testProcess({ a: "'Hey Dunia!'" })).toMatch('Hey Dunia!');
+  expect(mfnless.testProcess({ a: 'Hey World!' })).toMatch('Hey World!');
 });
 ```
