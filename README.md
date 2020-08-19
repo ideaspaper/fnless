@@ -65,7 +65,7 @@ _**Parameters**_
 
 - `objParams`: an object literal whose keys are the same with `keyVars`'s contents.
 
-> Since fnless use `JSON.parse()`, there will be limitations when inserting array or object as value.
+> Since fnless uses `JSON.parse()`, there will be limitations when inserting array or object as value.
 >
 >- Data types that have been tested are `string`, `number` and `boolean`.
 >- Falsy values that are safe to be put inside array or object are `false`, `0`, `''` and `null`.
