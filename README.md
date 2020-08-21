@@ -6,7 +6,7 @@
 
 ```javascript
 // index.js
-let str = 'Hello world!'
+let str = 'Hello world!';
 let times = 5;
 for (let i = 0; i < times; i++) {
   console.log(str);
