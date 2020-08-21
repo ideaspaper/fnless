@@ -2,7 +2,26 @@
 
 ## Description
 
-**fnless** is intended to make testing functionless code easier. Variables whose value will be changed during the testing must be included in initialization. fnless will wrap the code inside a method, that way it can be tested.
+**fnless** is intended to make testing functionless code easier. The term functionless code used in this documentation refers to code like below.
+
+```javascript
+// index.js
+let str = 'Hello world!'
+let times = 5;
+for (let i = 0; i < times; i++) {
+  console.log(str);
+}
+```
+
+Variables whose value will be changed during the test (`str` and `times` in the example above) must be included in initialization. fnless will then wrap the code inside a `.testProcess()` method, that way it can be tested. `.testProcess()` will return string value, the same as what you get when running the source code above in terminal.
+
+```javascript
+const fnless = require('fnless');
+const mfnless = new fnless('./index.js', ['str', 'times']);
+
+// Change str's value to 'Happy Holiday!' and times' value to 7
+console.log(mfnless.testProcess({ str: 'Happy Holiday!', times: 7 }));
+```
 
 ## Installation
 
@@ -58,7 +77,7 @@ This method is the wrapper of the functionless code.
 ```javascript
 const fnless = require('fnless');
 const mfnless = new fnless('./index.js', ['a', 'b']);
-const result = mfnless.testProcess({ a: 'Acong', b: 10 })
+const result = mfnless.testProcess({ a: 'Acong', b: 10 });
 ```
 
 _**Parameters**_
