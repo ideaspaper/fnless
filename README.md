@@ -113,18 +113,68 @@ none
 
 This is an example when using fnless with **jest**.
 
+`index.js`
+
+```javascript
+var scrollPos = 'bottom';
+var agree = true;
+var spyware = true;
+
+// Your code here
+```
+
+`__test__/index.test.js`
+
 ```javascript
 const fs = require('fs');
 const fnless = require('fnless');
 
-it('Simple console.log()', async () => {
-  let code = '';
-  code += `let a = 'Hello World'\n`;
-  code += `console.log(a)`;
-  fs.writeFileSync('index.js', code);
+const mfnless = new fnless('./index.js', ['scrollPos', 'agree', 'spyware']);
 
-  const mfnless = new fnless('index.js', ['a']);
-  expect(mfnless.isKeyVarsExist()).toEqual(true);
-  expect(mfnless.testProcess({ a: 'Hey World!' })).toMatch('Hey World!');
+afterAll(() => {
+  mfnless.deleteInstrumentFile();
+});
+
+it('Key variables exist', () => {
+  expect(mfnless.isKeyVarsExist()).toBe(true);
+});
+
+describe(`Testing invalid inputs`, () => {
+  it(`scrollPos: 'bottom'`, async () => {
+    expect(mfnless.testProcess({ scrollPos: 'bottom' })).toMatch('Unknown error');
+  });
+  it(`agree: true`, async () => {
+    expect(mfnless.testProcess({ agree: true })).toMatch('Unknown error');
+  });
+  it(`spyware: true`, async () => {
+    expect(mfnless.testProcess({ spyware: true })).toMatch('Unknown error');
+  });
+  it(`scrollPos: '', agree: true, spyware: true`, async () => {
+    expect(mfnless.testProcess({ scrollPos: '', agree: true, spyware: true })).toMatch('Unknown error');
+  });
+});
+
+describe(`Testing valid inputs`, () => {
+  it(`scrollPos: 'bottom', agree: false, spyware: true`, async () => {
+    expect(mfnless.testProcess({ scrollPos: 'bottom', agree: false, spyware: true })).toMatch('Cannot proceed when not agree');
+  });
+  it(`scrollPos: 'bottom', agree: true, spyware: false`, async () => {
+    expect(mfnless.testProcess({ scrollPos: 'bottom', agree: true, spyware: false })).toMatch('Installing software');
+  });
+  it(`scrollPos: 'bottom', agree: true, spyware: true`, async () => {
+    expect(mfnless.testProcess({ scrollPos: 'bottom', agree: true, spyware: true })).toMatch('Installing software + spyware remover');
+  });
+  it(`scrollPos: 'qwerty', agree: true, spyware: true`, async () => {
+    expect(mfnless.testProcess({ scrollPos: 'qwerty', agree: true, spyware: true })).toMatch('You have to read all the clauses before accepting');
+  });
+  it(`scrollPos: 'qwerty', agree: true, spyware: false`, async () => {
+    expect(mfnless.testProcess({ scrollPos: 'qwerty', agree: true, spyware: false })).toMatch('You have to read all the clauses before accepting');
+  });
+  it(`scrollPos: 'qwerty', agree: false, spyware: true`, async () => {
+    expect(mfnless.testProcess({ scrollPos: 'qwerty', agree: false, spyware: true })).toMatch('You have to read all the clauses before accepting');
+  });
+  it(`scrollPos: 'qwerty', agree: false, spyware: false`, async () => {
+    expect(mfnless.testProcess({ scrollPos: 'qwerty', agree: false, spyware: false })).toMatch('You have to read all the clauses before accepting');
+  });
 });
 ```
