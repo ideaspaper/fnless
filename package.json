@@ -1,6 +1,6 @@
 {
   "name": "fnless",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Package to make testing functionless code easier.",
   "repository": {
     "type": "git",
