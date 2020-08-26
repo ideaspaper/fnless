@@ -55,9 +55,9 @@ Check the validity of key variables in the functionless code. Invalid key variab
 const fnless = require('fnless');
 const mfnless = new fnless('./index.js', ['a', 'b']);
 if (mfnless.isKeyVarsValid()) {
-  console.log('Key variables exist');
+  console.log('Key variables valid');
 } else {
-  console.log('Key variables do not exist');
+  console.log('Key variables invalid');
 }
 ```
 
