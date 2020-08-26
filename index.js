@@ -4,12 +4,28 @@ const esc = require('escodegen');
 const { execSync } = require('child_process');
 
 class fnless {
+  /**
+   * Constructor of fnless class.
+   * @param {string} solutionPath Functionless code file path.
+   * @param {Array} keyVars An array of string. Each string represents a key variable in the functionless code.
+   * @constructor
+   * @example
+   * const fnless = require('fnless');
+   * const mfnless = new fnless('./index.js', ['a', 'b']);
+   */
   constructor(solutionPath, keyVars) {
     this._solutionPath = solutionPath;
     this._instrumentFile = './fnless-inst.js';
     this._keyVars = keyVars;
   }
 
+  /**
+   * Check the parsed script for the validity of keyVars. 
+   * @param {*} vars 
+   * @param {object} script return value of esprima's parseScript method.
+   * @returns {object} object that represents some parts of the script if keyVars is valid, null otherwise.
+   * @private
+   */
   _varsPassed(vars, script) {
     let count = 0;
     let ret = {};
@@ -24,15 +40,38 @@ class fnless {
       : null;
   };
 
-  isKeyVarsExist() {
+  /**
+   * Check the validity of key variables in the functionless code. Invalid key variables means that some are missing or have been redeclared.
+   * @param {void} Nothing
+   * @returns {boolean} true if key variables valid, false when otherwise.
+   * @example
+   * const fnless = require('fnless');
+   * const mfnless = new fnless('./index.js', ['a', 'b']);
+   * if (mfnless.isKeyVarsValid()) {
+   *   console.log('Key variables exist');
+   * } else {
+   *   console.log('Key variables do not exist');
+   * }
+   */
+  isKeyVarsValid() {
     const solution = fs.readFileSync(this._solutionPath, 'utf8');
     const parsed = esp.parseScript(solution);
     const params = this._varsPassed(this._keyVars, parsed);
-    return this._keyVars.length === Object.keys(params).length
-      ? true
-      : false;
+    if (params) {
+      return true;
+    }
+    return false;
   }
 
+  /**
+   * Wrapper of the functionless code. The value of key variables inside the functionless code can be changed according to objParams.
+   * @param {Object} objParams An object that contains keys that have been mentioned during object instantiation as keyVars.
+   * @returns {string} Same string you get when running the functionless code in terminal.
+   * @example
+   * const fnless = require('fnless');
+   * const mfnless = new fnless('./index.js', ['a', 'b']);
+   * const result = mfnless.testProcess({ a: 'Acong', b: 10 });
+   */
   testProcess(objParams) {
     const solution = fs.readFileSync(this._solutionPath, 'utf8');
     const parsed = esp.parseScript(solution);
@@ -79,6 +118,11 @@ class fnless {
     return result;
   };
 
+  /**
+   * Delete instrument file that was created by testProcess method.
+   * @param {void} Nothing
+   * @returns {void} Nothing.
+   */
   deleteInstrumentFile() {
     if (fs.existsSync(this._instrumentFile)) {
       fs.unlinkSync(this._instrumentFile);

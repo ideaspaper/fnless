@@ -47,14 +47,14 @@ _**Return**_
 
 fnless object instance.
 
-### `isKeyVarsExist`
+### `isKeyVarsValid`
 
 This method will check whether all of `keyVars` exist in the source code file.
 
 ```javascript
 const fnless = require('fnless');
 const mfnless = new fnless('./index.js', ['a', 'b']);
-if (mfnless.isKeyVarsExist()) {
+if (mfnless.isKeyVarsValid()) {
   console.log('Key variables exist');
 } else {
   console.log('Key variables do not exist');
@@ -136,7 +136,7 @@ afterAll(() => {
 });
 
 it('Key variables exist', () => {
-  expect(mfnless.isKeyVarsExist()).toBe(true);
+  expect(mfnless.isKeyVarsValid()).toBe(true);
 });
 
 describe(`Testing invalid inputs`, () => {
