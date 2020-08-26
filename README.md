@@ -82,7 +82,7 @@ const result = mfnless.testProcess({ a: 'Acong', b: 10 });
 
 _**Parameters**_
 
-- `objParams`: An object that contains keys that have been mentioned during object instantiation as keyVars.
+- `objParams`: An object that contains keys that have been mentioned during object instantiation as `keyVars`.
 
 > Since fnless uses `JSON.parse()`, there will be limitations when inserting array or object as value.
 >
