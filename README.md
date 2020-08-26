@@ -72,7 +72,7 @@ _**Return**_
 
 ### `testProcess`
 
-Wrapper of the functionless code. The value of key variables inside the functionless code can be changed according to objParams.
+Wrapper of the functionless code. The value of key variables inside the functionless code can be changed according to `objParams`.
 
 ```javascript
 const fnless = require('fnless');
