@@ -63,7 +63,7 @@ if (mfnless.isKeyVarsValid()) {
 
 _**Parameters**_
 
-none
+Nothing
 
 _**Return**_
 
@@ -103,11 +103,11 @@ Delete instrument file that was created by testProcess method. This method shoul
 
 _**Parameters**_
 
-none
+Nothing
 
 _**Return**_
 
-none
+Nothing
 
 ## Example
 
