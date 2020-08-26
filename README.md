@@ -40,8 +40,8 @@ const mfnless = new fnless('./index.js', ['a', 'b']);
 
 _**Parameters**_
 
-- `solutionPath`: path of the source code file.
-- `keyVars`: an array of strings, which contains variable names whose value need to be changed during the test.
+- `solutionPath`: Functionless code file path.
+- `keyVars`: An array of string. Each string represents a key variable's name in the functionless code.
 
 _**Return**_
 
@@ -67,8 +67,8 @@ none
 
 _**Return**_
 
-- `true`: if key variables exist.
-- `false`: if key variables do not exist.
+- `true`: If key variables valid.
+- `false`: If key variables invalid.
 
 ### `testProcess`
 
@@ -82,7 +82,7 @@ const result = mfnless.testProcess({ a: 'Acong', b: 10 });
 
 _**Parameters**_
 
-- `objParams`: an object literal whose keys are the same with `keyVars`'s contents.
+- `objParams`: An object that contains keys that have been mentioned during object instantiation as keyVars.
 
 > Since fnless uses `JSON.parse()`, there will be limitations when inserting array or object as value.
 >
@@ -95,7 +95,7 @@ _**Parameters**_
 
 _**Return**_
 
-Same string you get when running the source code on terminal.
+Same string you get when running the functionless code in terminal.
 
 ### `deleteInstrumentFile`
 

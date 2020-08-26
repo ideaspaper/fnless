@@ -7,7 +7,7 @@ class fnless {
   /**
    * Constructor of fnless class.
    * @param {string} solutionPath Functionless code file path.
-   * @param {Array} keyVars An array of string. Each string represents a key variable in the functionless code.
+   * @param {Array} keyVars An array of string. Each string represents a key variable's name in the functionless code.
    * @constructor
    * @example
    * const fnless = require('fnless');
