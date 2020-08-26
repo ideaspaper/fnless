@@ -119,7 +119,7 @@ class fnless {
   };
 
   /**
-   * Delete instrument file that was created by testProcess method.
+   * Delete instrument file that was created by testProcess method. This method should be called after all testing has been completed.
    * @param {void} Nothing
    * @returns {void} Nothing.
    */

@@ -31,7 +31,7 @@ This package can be installed using npm command `npm i fnless`.
 
 ### `Constructor`
 
-Below is the code needed for initialization process.
+Constructor of fnless class.
 
 ```javascript
 const fnless = require('fnless');
@@ -49,7 +49,7 @@ fnless object instance.
 
 ### `isKeyVarsValid`
 
-This method will check whether all of `keyVars` exist in the source code file.
+Check the validity of key variables in the functionless code. Invalid key variables means that some are missing or have been redeclared.
 
 ```javascript
 const fnless = require('fnless');
@@ -72,7 +72,7 @@ _**Return**_
 
 ### `testProcess`
 
-This method is the wrapper of the functionless code.
+Wrapper of the functionless code. The value of key variables inside the functionless code can be changed according to objParams.
 
 ```javascript
 const fnless = require('fnless');
@@ -99,7 +99,7 @@ Same string you get when running the source code on terminal.
 
 ### `deleteInstrumentFile`
 
-This method should be called after all testing has been completed. This method will delete the testing file that was created for testing process.
+Delete instrument file that was created by testProcess method. This method should be called after all testing has been completed.
 
 _**Parameters**_
 
