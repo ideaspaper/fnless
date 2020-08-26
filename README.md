@@ -135,7 +135,7 @@ afterAll(() => {
   mfnless.deleteInstrumentFile();
 });
 
-it('Key variables exist', () => {
+it('Key variables valid', () => {
   expect(mfnless.isKeyVarsValid()).toBe(true);
 });
 
