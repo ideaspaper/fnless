@@ -99,7 +99,7 @@ Same string you get when running the functionless code in terminal.
 
 ### `deleteInstrumentFile`
 
-Delete instrument file that was created by `testProcess` method. This method should be called after all testing has been completed.
+Delete instrument file that was created by `.testProcess` method. This method should be called after all testing has been completed.
 
 _**Parameters**_
 
