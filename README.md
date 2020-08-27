@@ -13,7 +13,7 @@ for (let i = 0; i < times; i++) {
 }
 ```
 
-Variables whose value will be changed during the test (`str` and `times` in the example above) must be included in initialization. fnless will then wrap the code inside a `.testProcess()` method, that way it can be tested. `.testProcess()` will return string value, the same as what you get when running the source code above in terminal.
+Variables whose value will be changed during the test (`str` and `times` in the example above) must be included in initialization. fnless will then wrap the code inside a `.testProcess` method, that way it can be tested. `.testProcess` will return string value, the same as what you get when running the source code above in terminal.
 
 ```javascript
 const fnless = require('fnless');
@@ -99,7 +99,7 @@ Same string you get when running the functionless code in terminal.
 
 ### `deleteInstrumentFile`
 
-Delete instrument file that was created by testProcess method. This method should be called after all testing has been completed.
+Delete instrument file that was created by `testProcess` method. This method should be called after all testing has been completed.
 
 _**Parameters**_
 
